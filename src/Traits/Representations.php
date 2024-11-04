@@ -66,6 +66,26 @@ trait Representations
     }
 
     /**
+     * @param array|null $sides
+     * @param array|null $k_bitrate
+     * @param bool $acceding_order
+     * @return $this
+     */
+    public function addOriginalRepresentation(array $sides = null, array $k_bitrate = null, bool $acceding_order = true)
+    {
+        if (!$this->format) {
+            throw new InvalidArgumentException('First you must set the format of the video');
+        }
+
+        $reps = new AutoReps($this->getMedia(), $this->getFormat(), $sides, $k_bitrate);
+        $reps->sort($acceding_order);
+
+        $this->addRepresentation($reps->getOriginalRep());
+
+        return $this;
+    }
+
+    /**
      * @return RepsCollection
      */
     public function getRepresentations(): RepsCollection
